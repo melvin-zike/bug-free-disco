@@ -31,16 +31,14 @@ app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 // middleware
 app.use(express.json());
-app.use(express.json({ limit: '50mb' }));
+app.use(express.json({ limit: "50mb" }));
 app.use(
-express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 })
+  express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 })
 );
 app.use(helmet());
 app.use(morgan("common"));
 // app.use(bodyParser({ limit: "20mb", extended: true}));
 // app.use(bodyParser.urlencoded({ limit: "20mb", extended: true}));
-
-
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -66,16 +64,6 @@ app.use("/api/posts", postRoute);
 app.use("/api/conversations", conversationRoute);
 app.use("/api/messages", messageRoute);
 
-app.use(express.static(path.join(__dirname, "/domot-client")));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/domot-client/build', 'index.html'));
-});
-
-
-
 app.listen(process.env.PORT || 4200, () => {
   console.log("Backend server is running!");
 });
-
-
