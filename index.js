@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const mongoose = require("mongoose");
 // const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
@@ -29,6 +30,12 @@ mongoose.connect(
 
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 
+//cors
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://cappa.onrender.com"],
+  })
+);
 // middleware
 app.use(express.json());
 app.use(express.json({ limit: "50mb" }));
@@ -63,6 +70,12 @@ app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/conversations", conversationRoute);
 app.use("/api/messages", messageRoute);
+
+app.use(express.static(path.join(__dirname, "/domot-client")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "/domot-client/build", "index.html"));
+});
 
 app.listen(process.env.PORT || 4200, () => {
   console.log("Backend server is running!");
